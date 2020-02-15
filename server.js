@@ -78,13 +78,14 @@ app.get('/api/posts', async (req, res) => {
 
 app.post('/api/posts', (req, res) => {
     let { name, topic, content } = req.body
-    client.query(/*  เพิ่มค่า(username,topic,content) ลง table post ต่อจาก VALUES ให้ใส่ ($1,$2,$3) ไปเลย*/, [name, topic, content],
+    client.query(/*  เพิ่มค่า(username,topic,content) ลง table post ต่อจาก VALUES ให้ใส่ ($1,$2,$3) RETURNING id ไปเลย*/, [name, topic, content],
         (err) => {
             if (err) {
                 console.log(err.stack)
+            }else{
+                res.status(201).send(data.rows[0].id.toString())
             }
         })
-    res.status(201).send("Post created")
 })
 
 app.get('/api/posts/:id', (req, res) => {
@@ -103,7 +104,7 @@ app.get('/api/posts/:id', (req, res) => {
         } else {
             console.log(data.rows)
             let allcomment = { ...forsend, comment: [...data.rows] }
-            res.json(allcomment)
+            //ส่ง allcomment กลับไป
         }
     })
 })
