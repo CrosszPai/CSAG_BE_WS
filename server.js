@@ -42,7 +42,7 @@ app.post('/api/user/login', (req, res) => {
                 res.status(401)
             }
             else {
-                res.status(401)
+                res.status(202)
             }
         }
     })
